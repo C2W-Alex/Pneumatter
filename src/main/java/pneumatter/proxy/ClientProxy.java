@@ -1,4 +1,4 @@
-package pneumatic.matter.proxy;
+package pneumatter.proxy;
 
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;

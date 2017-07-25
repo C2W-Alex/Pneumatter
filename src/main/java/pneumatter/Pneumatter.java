@@ -1,4 +1,4 @@
-package pneumatic.matter;
+package pneumatter;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
@@ -7,21 +7,21 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
-import pneumatic.matter.proxy.CommonProxy;
+import pneumatter.proxy.CommonProxy;
 
 
-@Mod(modid = PneumaticMatterMain.MODID, name = PneumaticMatterMain.MODNAME, version = PneumaticMatterMain.VERSION, useMetadata = true)
-public class PneumaticMatterMain {
+@Mod(modid = Pneumatter.MODID, name = Pneumatter.MODNAME, version = Pneumatter.VERSION, useMetadata = true)
+public class Pneumatter {
 
-    public static final String MODID = "pneumaticmatter";
-    public static final String MODNAME = "Pneumatic Matter";
+    public static final String MODID = "pneumatter";
+    public static final String MODNAME = "Pneumatter";
     public static final String VERSION = "0.0.1";
 
-    @SidedProxy(clientSide = "pneumatic.matter.proxy.ClientProxy", serverSide = "pneumatic.matter.proxy.ServerProxy")
+    @SidedProxy(clientSide = "pneumatter.proxy.ClientProxy", serverSide = "pneumatter.proxy.ServerProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance
-    public static PneumaticMatterMain instance;
+    public static Pneumatter instance;
 
     public static Logger logger;
 
