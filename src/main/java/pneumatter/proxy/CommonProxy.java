@@ -11,11 +11,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pneumatter.block.ModBlocks;
 import pneumatter.item.ModItems;
+import pneumatter.network.PacketHandler;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
+        PacketHandler.registerPackets();
     }
 
     public void init(FMLInitializationEvent e) {
