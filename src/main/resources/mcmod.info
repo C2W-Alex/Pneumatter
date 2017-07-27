@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "pneumatter",
+  "name": "Pneumatter",
+  "description": "A Minecraft mod centered around harnessing the player's vital energy and distributing it at their will. A simple example of what this mod aims to implement is trading maximum health for attack damage.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["C2W-Alex", "Wehavecookies56"],
+  "credits": "The Forge and FML guys, for making forge and FML",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

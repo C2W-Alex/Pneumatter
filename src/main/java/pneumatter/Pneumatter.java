@@ -1,10 +1,14 @@
 package pneumatter;
 
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 import pneumatter.proxy.CommonProxy;
 
@@ -38,6 +42,28 @@ public class Pneumatter {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         proxy.postInit(e);
+    }
+
+    @Config(modid = MODID)
+    public static class ConfigHandler {
+
+        @Config.Name("Testing")
+        @Config.Comment("Testing Config")
+        @Config.LangKey("pneumatter.testconfigoption")
+        public static boolean testConfigOption = true;
+
+        @Mod.EventBusSubscriber(modid = MODID)
+        public static class ConfigChanged {
+
+            @SubscribeEvent
+            public static void onConfigChanged(ConfigChangedEvent event) {
+                if (event.getModID().equals(MODID)) {
+                    ConfigManager.sync(MODID, Config.Type.INSTANCE);
+                }
+            }
+
+        }
+
     }
 
 }
