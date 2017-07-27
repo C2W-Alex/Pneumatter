@@ -49,7 +49,6 @@ public class Pneumatter {
 
         @Config.Name("Testing")
         @Config.Comment("Testing Config")
-        @Config.LangKey("pneumatter.testconfigoption")
         public static boolean testConfigOption = true;
 
         @Mod.EventBusSubscriber(modid = MODID)
