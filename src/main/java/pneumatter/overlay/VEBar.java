@@ -6,12 +6,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.Display;
 import pneumatter.Pneumatter;
-import pneumatter.network.PacketHandler;
-import pneumatter.network.TestPacket;
 
 public class VEBar extends GuiScreen {
 
