@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pneumatter.block.ModBlocks;
+import pneumatter.capabilities.CapabilityHandler;
 import pneumatter.item.ModItems;
 import pneumatter.network.PacketHandler;
 
@@ -18,6 +19,7 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
         PacketHandler.registerPackets();
+        CapabilityHandler.registerCapabilities();
     }
 
     public void init(FMLInitializationEvent e) {

@@ -1,24 +1,53 @@
 package pneumatter.capabilities;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class VECapability {
 
     @CapabilityInject(IVECapability.class)
     public static Capability<IVECapability> VE = null;
 
-    public void register()
-    {
+    @SubscribeEvent
+    public static void attachVECap(AttachCapabilitiesEvent<Entity> e){
+        if(e.getObject() instanceof EntityPlayer){
+                e.addCapability(CapabilityHandler.VE, new VECapProvider());
+        }
+
+    }
+
+    public static class VECapProvider implements ICapabilityProvider{
+        @Override
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+            if (capability == VECapability.VE) {
+                return true;
+            }
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+            if (capability == VECapability.VE) {
+                return (T) capability;
+            }
+            return null;
+        }
+    }
+
+    public void register() {
         CapabilityManager.INSTANCE.register(IVECapability.class, new VEStorage(), IVECapImplementation.class);
     }
 
