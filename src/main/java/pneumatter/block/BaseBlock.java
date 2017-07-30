@@ -23,10 +23,8 @@ public class BaseBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote) {
-            playerIn.getCapability(VECapability.VE, null).addVE(5);
-            System.out.println(playerIn.getCapability(VECapability.VE, null).getVE());
-        }
+        if (!worldIn.isRemote)
+            System.out.println(playerIn.hasCapability(VECapability.VE, null));
         return true;
     }
 }
