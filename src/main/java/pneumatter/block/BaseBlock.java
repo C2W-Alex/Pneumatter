@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import pneumatter.Pneumatter;
 import pneumatter.PneumatterTab;
-import pneumatter.capabilities.VECapability;
+import pneumatter.commitments.MaxHealthCommitment;
 
 public class BaseBlock extends Block {
 
@@ -24,8 +24,7 @@ public class BaseBlock extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote) {
-            playerIn.getCapability(VECapability.VE, null).addVE(5);
-            System.out.println(playerIn.getCapability(VECapability.VE, null).getVE());
+            new MaxHealthCommitment(playerIn, 8D); //amount is in double and represents half-hearts
         }
         return true;
     }
