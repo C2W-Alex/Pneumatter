@@ -5,12 +5,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import pneumatter.Pneumatter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,32 +17,37 @@ import javax.annotation.Nullable;
 public class VECapability {
 
     @CapabilityInject(IVECapability.class)
-    public static Capability<IVECapability> VE = null;
+    public static final Capability<IVECapability> VE = null;
 
     @SubscribeEvent
-    public static void attachVECap(AttachCapabilitiesEvent<Entity> e){
+    public void attachVECap(AttachCapabilitiesEvent<Entity> e){
         if(e.getObject() instanceof EntityPlayer){
-                e.addCapability(CapabilityHandler.VE, new VECapProvider());
+            e.addCapability(CapabilityHandler.VE, new VECapProvider());
         }
 
     }
 
-    public static class VECapProvider implements ICapabilityProvider{
+    public static class VECapProvider implements ICapabilitySerializable<NBTTagCompound> {
+
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-            if (capability == VECapability.VE) {
-                return true;
-            }
-            return false;
+            return capability == VE;
         }
 
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-            if (capability == VECapability.VE) {
-                return (T) capability;
-            }
-            return null;
+            return capability == VE ? capability.getDefaultInstance() : null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT() {
+            return (NBTTagCompound) VE.getStorage().writeNBT(VE, VE.getDefaultInstance(), null);
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            VE.getStorage().readNBT(VE, VE.getDefaultInstance(), null, nbt);
         }
     }
 
@@ -51,9 +55,9 @@ public class VECapability {
         CapabilityManager.INSTANCE.register(IVECapability.class, new VEStorage(), IVECapImplementation.class);
     }
 
-    public class IVECapImplementation implements IVECapability{
-        public int ve;
-        public int veMax;
+    public static class IVECapImplementation implements IVECapability{
+        public int ve = 0;
+        public int veMax = 10;
 
         @Override
         public int getVE() {
@@ -67,10 +71,10 @@ public class VECapability {
 
         @Override
         public void addVE(int amount) {
-            if(ve + amount <= veMax)
+            if(ve + amount <= getMaxVE())
                 ve += amount;
             else{
-                ve = veMax;
+                ve = getMaxVE();
             }
         }
 
@@ -94,7 +98,7 @@ public class VECapability {
         }
     }
 
-    public class VEStorage implements Capability.IStorage<IVECapability> {
+    public static class VEStorage implements Capability.IStorage<IVECapability> {
 
         @Nullable
         @Override
