@@ -10,9 +10,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import pneumatter.Pneumatter;
 import pneumatter.block.ModBlocks;
 import pneumatter.capabilities.CapabilityHandler;
 import pneumatter.capabilities.VECapability;
+import pneumatter.gui.GuiHandler;
 import pneumatter.item.ModItems;
 import pneumatter.network.PacketHandler;
 
@@ -23,6 +26,7 @@ public class CommonProxy {
         PacketHandler.registerPackets();
         CapabilityHandler.registerCapabilities();
         MinecraftForge.EVENT_BUS.register(new VECapability());
+        NetworkRegistry.INSTANCE.registerGuiHandler(Pneumatter.instance, new GuiHandler());
     }
 
     public void init(FMLInitializationEvent e) {

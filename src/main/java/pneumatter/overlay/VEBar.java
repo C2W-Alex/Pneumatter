@@ -11,7 +11,7 @@ import pneumatter.Pneumatter;
 
 public class VEBar extends GuiScreen {
 
-    public static final ResourceLocation text = new ResourceLocation(Pneumatter.MODID, "textures/overlays/vebar.png");
+    public static final ResourceLocation text = new ResourceLocation(Pneumatter.MODID, "textures/overlays/ve_bar.png");
 
     @SubscribeEvent
     public void renderOverlayEvent(RenderGameOverlayEvent event) {
@@ -20,7 +20,6 @@ public class VEBar extends GuiScreen {
         if(event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             mc.renderEngine.bindTexture(text);
             GlStateManager.enableAlpha();
-            GlStateManager.color(1, 1, 1, 0.5F);
             drawTexturedModalRect(sr.getScaledWidth() - (150 - 87) - 5, (sr.getScaledHeight() / 2) - (256 / 2), 87, 0, 150, 256);
         }
         //TODO semi-transparent bar on the right side of the screen (vertical), show your VE (Vitae Essentia) levels
