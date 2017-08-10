@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import pneumatter.Pneumatter;
 import pneumatter.PneumatterTab;
 import pneumatter.capabilities.VECapability;
+import pneumatter.commitments.MaxHealthCommitment;
 
 public class BaseBlock extends Block {
 
@@ -25,6 +26,7 @@ public class BaseBlock extends Block {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote)
             System.out.println(playerIn.hasCapability(VECapability.VE, null));
+            new MaxHealthCommitment(playerIn, 8D);
         return true;
     }
 }
