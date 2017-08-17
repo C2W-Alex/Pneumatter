@@ -18,6 +18,7 @@ import pneumatter.capabilities.VECapability;
 import pneumatter.gui.GuiHandler;
 import pneumatter.item.ModItems;
 import pneumatter.network.PacketHandler;
+import pneumatter.rituals.ModRituals;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
@@ -27,6 +28,7 @@ public class CommonProxy {
         CapabilityHandler.registerCapabilities();
         MinecraftForge.EVENT_BUS.register(new VECapability());
         NetworkRegistry.INSTANCE.registerGuiHandler(Pneumatter.instance, new GuiHandler());
+        ModRituals.register();
     }
 
     public void init(FMLInitializationEvent e) {
