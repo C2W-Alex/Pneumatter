@@ -1,45 +1,35 @@
 package pneumatter.rituals;
 
-import net.minecraft.util.math.BlockPos;
 
-public class RitualCurse implements IRitualBase {
+import net.minecraft.entity.player.EntityPlayer;
 
-    public RitualCurse() {
+public abstract class RitualCurse extends RitualBase implements IRitualBase {
+
+    public RitualCurse(EntityPlayer player) {
+        super(player);
+    }
+
+    @Override
+    public void performRitual() {
+        if(getTimeElapsed() == getDuration()){
+            applyEffects();
+            applySideEffects();
+        }
+        super.performRitual();
+    }
+
+    @Override
+    public EnumRitualLevel getLevel() {
+        return EnumRitualLevel.PRIMITIVE;
+    }
+
+    @Override
+    public void applySideEffects() {
 
     }
 
     @Override
-    public Boolean getIsPrimitive() {
-        return true;
-    }
+    public void applyEffects() {
 
-    @Override
-    public EnumRitualList getRitualType() {
-        return EnumRitualList.CURSE;
-    }
-
-    @Override
-    public BlockPos[] getRequiredBlocksByOffset() {
-        return null;
-    }
-
-    @Override
-    public Boolean isRitualReady() {
-        return false;
-    }
-
-    @Override
-    public void executeRitual() {
-
-    }
-
-    @Override
-    public long getDuration() {
-        return 0;
-    }
-
-    @Override
-    public long getStartTime() {
-        return 0;
     }
 }

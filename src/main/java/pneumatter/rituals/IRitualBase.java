@@ -1,21 +1,13 @@
 package pneumatter.rituals;
 
-import net.minecraft.util.math.BlockPos;
-
 public interface IRitualBase {
 
-    Boolean getIsPrimitive();
+    EnumRitualLevel getLevel();
 
-    EnumRitualList getRitualType();
+    void applySideEffects();
 
-    BlockPos[] getRequiredBlocksByOffset();
+    void applyEffects();
 
-    Boolean isRitualReady();
-
-    void executeRitual();
-
-    long getDuration();
-
-    long getStartTime();
+    void castSpell();
 
 }

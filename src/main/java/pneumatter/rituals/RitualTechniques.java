@@ -2,9 +2,9 @@ package pneumatter.rituals;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public abstract class RitualCommitment extends RitualBase implements IRitualBase {
+public abstract class RitualTechniques extends RitualBase implements IRitualBase{
 
-    public RitualCommitment(EntityPlayer player){
+    public RitualTechniques(EntityPlayer player){
         super(player);
     }
 
@@ -12,6 +12,7 @@ public abstract class RitualCommitment extends RitualBase implements IRitualBase
     public void performRitual() {
         if(getTimeElapsed() == getDuration()){
             applyEffects();
+            castSpell();
         }
         super.performRitual();
     }
@@ -23,6 +24,11 @@ public abstract class RitualCommitment extends RitualBase implements IRitualBase
 
     @Override
     public void applyEffects() {
+
+    }
+
+    @Override
+    public void castSpell() {
 
     }
 }
