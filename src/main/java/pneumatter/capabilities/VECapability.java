@@ -56,8 +56,8 @@ public class VECapability {
     }
 
     public static class IVECapImplementation implements IVECapability{
-        public int ve = 0;
-        public int veMax = 10;
+        public int ve = 50;
+        public int veMax = 100;
 
         @Override
         public int getVE() {

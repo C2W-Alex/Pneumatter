@@ -6,8 +6,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pneumatter.Pneumatter;
+import pneumatter.capabilities.IVECapability;
+import pneumatter.capabilities.VECapability;
 
 public class VEBar extends GuiScreen {
 
@@ -20,9 +23,15 @@ public class VEBar extends GuiScreen {
         if(event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             mc.renderEngine.bindTexture(text);
             GlStateManager.enableAlpha();
-            drawTexturedModalRect(sr.getScaledWidth() - (150 - 87) - 5, (sr.getScaledHeight() / 2) - (256 / 2), 87, 0, 150, 256);
+            drawTexturedModalRect(sr.getScaledWidth()*31/32 - 19, sr.getScaledHeight()*1/16, 0, 0, 19, 195);
+
+            for(int x = 190; x >= mc.player.getCapability(VECapability.VE, null ).getVE()/mc.player.getCapability(VECapability.VE, null ).getMaxVE()*190;  x--){
+                GlStateManager.enableAlpha();
+                drawTexturedModalRect(sr.getScaledWidth()*31/32 - 19, sr.getScaledHeight()*1/16 + 2 + x, 19, 2 + x, 19, 1);
+            }
+
         }
-        //TODO semi-transparent bar on the right side of the screen (vertical), show your VE (Vitae Essentia) levels
+
     }
 
 }
