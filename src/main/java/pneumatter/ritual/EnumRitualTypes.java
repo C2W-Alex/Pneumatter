@@ -1,4 +1,4 @@
-package pneumatter.rituals;
+package pneumatter.ritual;
 
 public enum EnumRitualTypes {
 
