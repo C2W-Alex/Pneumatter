@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import pneumatter.Pneumatter;
 import pneumatter.PneumatterTab;
+import pneumatter.ritual.RitualUtil;
 import pneumatter.ritual.commitment.MaxHealthRitual;
 
 public class BaseBlock extends Block {
@@ -23,7 +24,7 @@ public class BaseBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        MaxHealthRitual ritual = new MaxHealthRitual(playerIn, worldIn, MaxHealthRitual.DURATION, MaxHealthRitual.FULL_DURATION, pos);
+        RitualUtil.ongoingRituals.add(new MaxHealthRitual(playerIn, worldIn, pos));
 
         return true;
     }

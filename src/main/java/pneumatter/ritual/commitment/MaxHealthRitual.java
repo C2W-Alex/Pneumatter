@@ -6,55 +6,44 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import pneumatter.commitments.MaxHealthCommitment;
-import pneumatter.ritual.RitualCommitment;
+import pneumatter.ritual.EnumRitualLevel;
+import pneumatter.ritual.EnumRitualTypes;
+import pneumatter.ritual.RitualBase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
-public class MaxHealthRitual extends RitualCommitment{
+public class MaxHealthRitual extends RitualBase{
 
     public static final long DURATION = 5000;
     public static final long FULL_DURATION = 7000;
+    public static final EnumRitualLevel LEVEL = EnumRitualLevel.PRIMAL;
+    public static final EnumRitualTypes TYPE = EnumRitualTypes.COMMITMENT;
+    public static final int VECOST = 20;
+    public static final ArrayList<BlockPos> BLOCK_POS = new ArrayList<>();
+    public static final ArrayList<Block> BLOCKS = new ArrayList<Block>(){};
 
-    public MaxHealthRitual(EntityPlayer player, World world, long duration, long fullDuration, BlockPos pos){
-        super(player, world, duration, fullDuration, pos);
+
+    public MaxHealthRitual(EntityPlayer player, World world, BlockPos pos) {
+        super(player, world, pos, DURATION, FULL_DURATION, LEVEL, VECOST, BLOCK_POS, BLOCKS, TYPE);
     }
 
     @Override
-    public void applySideEffects(EntityPlayer player, World world) {}
+    public void addRequirements(BlockPos pos) {
+        BLOCK_POS.add(new BlockPos(pos.getX()+4, pos.getY(), pos.getZ()));
+        BLOCK_POS.add(new BlockPos(pos.getX()-4, pos.getY(), pos.getZ()));
+        BLOCK_POS.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ()+4));
+        BLOCK_POS.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ()-4));
 
-    @Override
-    public void applyEffects(EntityPlayer player, World world) {
-        if(world.isRemote) {
-            new MaxHealthCommitment(player, 4D);
-        }
+        BLOCKS.add(Blocks.DIAMOND_BLOCK);
+        BLOCKS.add(Blocks.DIAMOND_BLOCK);
+        BLOCKS.add(Blocks.DIAMOND_BLOCK);
+        BLOCKS.add(Blocks.DIAMOND_BLOCK);
     }
 
     @Override
-    public ArrayList<Block> getRequiredBlocks(EntityPlayer player, World world, BlockPos pos) {
-        ArrayList<Block> a = new ArrayList<>();
-        a.add(Blocks.DIAMOND_BLOCK);
-        a.add(Blocks.DIAMOND_BLOCK);
-        a.add(Blocks.DIAMOND_BLOCK);
-        a.add(Blocks.DIAMOND_BLOCK);
-        return a;
-    }
-
-    @Override
-    public ArrayList<BlockPos> getRequiredBlockPositions(EntityPlayer player, World world, BlockPos pos) {
-        ArrayList<BlockPos> a = new ArrayList<>();
-        a.add(new BlockPos(pos.getX() + 4, pos.getY(), pos.getZ()));
-        a.add(new BlockPos(pos.getX() - 4, pos.getY(), pos.getZ()));
-        a.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 4));
-        a.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 4));
-        return a;
-    }
-
-    @Override
-    public void castSpell(EntityPlayer player, World world) {}
-
-    @Override
-    public void render(EntityPlayer player, World world, BlockPos pos) {
-
+    public void applyEffects() {
+        new MaxHealthCommitment(super.player, 4D);
     }
 }

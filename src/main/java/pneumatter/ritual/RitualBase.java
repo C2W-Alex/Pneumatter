@@ -9,23 +9,45 @@ import pneumatter.capabilities.VECapability;
 
 import java.util.ArrayList;
 
-public abstract class RitualBase{
+public class RitualBase{
 
     public long startTime;
     public long timeElapsed;
     public long duration;
     public long fullDuration;
+
+    public EnumRitualLevel level;
+
+    public int veCost;
+
     public ArrayList<BlockPos> blockPositions;
     public ArrayList<Block> blocksInOrder;
 
-    public RitualBase(EntityPlayer player, World world, long duration, long fullDuration, BlockPos pos) {
+    public EntityPlayer player;
+    public World world;
+    public BlockPos pos;
+
+    public EnumRitualTypes type;
+
+    public RitualBase(EntityPlayer player, World world, BlockPos pos, long duration, long fullDuration, EnumRitualLevel level, int veCost, ArrayList<BlockPos> blockPositions, ArrayList<Block> blocksInOrder, EnumRitualTypes type) {
+        this.player = player;
+        this.pos = pos;
+        this.world = world;
         setDuration(duration);
         setFullDuration(fullDuration);
+        setLevel(level);
+        setVECost(veCost);
+        setBlockPositions(blockPositions);
+        setBlocksInOrder(blocksInOrder);
+        setRitualType(type);
+        addRequirements(pos);
         start(player, world, pos);
     }
 
-    public Boolean isRitualReady(EntityPlayer player, World world, BlockPos pos) {
-        return RitualUtil.checkAreBlocksDown(getRequiredBlocks(player, world, pos), getRequiredBlockPositions(player,world, pos), world);
+
+
+    public Boolean isRitualReady() {
+        return isRitualInPlace();
     }
 
     public void start(EntityPlayer player, World world, BlockPos pos){
@@ -34,17 +56,82 @@ public abstract class RitualBase{
         }else{
             player.getCapability(VECapability.VE, null).removeVE(getVECost());
         }
-        startTime = System.currentTimeMillis();
-        if(isRitualReady(player, world, pos)) {
-            performRitual(player, world, pos);
+
+        if(isRitualReady()) {
+            startTime = System.currentTimeMillis();
         }
     }
 
-    public void performRitual(EntityPlayer player, World world, BlockPos pos) {
-        timeElapsed = System.currentTimeMillis() - getStartTime();
-        if(!isDone()){
-            render(player, world, pos);
+
+
+    public void update(){
+
+        if(isRitualInPlace() && !isDone()) {
+            timeElapsed = System.currentTimeMillis() - getStartTime();
+            if(world.isRemote){
+                render();
+            }
+            if(timeElapsed == duration) {
+                if (getRitualType() == EnumRitualTypes.COMMITMENT) {
+                    applyEffects();
+                } else if (getRitualType() == EnumRitualTypes.CURSE) {
+                    applyEffects();
+                    applySideEffects();
+                } else if (getRitualType() == EnumRitualTypes.TECHNIQUE) {
+                    applyEffects();
+                    castSpell();
+                }
+            }
+        }else{
+            if(!world.isRemote) {
+                RitualUtil.ongoingRituals.remove(this);
+            }
         }
+    }
+
+    public Boolean isRitualInPlace(){
+        return RitualUtil.checkAreBlocksDown(getRequiredBlocks(), getRequiredBlockPositions(), world);
+    }
+
+
+    public Boolean isDone(){
+        return timeElapsed > getFullDuration();
+    }
+
+    public EnumRitualTypes getRitualType(){
+        return type;
+    }
+
+    public void applySideEffects(){
+
+    }
+
+    public void applyEffects(){
+
+    }
+
+    public void castSpell(){
+
+    }
+
+    public void render(){
+
+    }
+
+    public void addRequirements(BlockPos pos){
+
+    }
+
+    public EnumRitualLevel getLevel(){
+        return level;
+    }
+
+    public ArrayList<Block> getRequiredBlocks(){
+        return blocksInOrder;
+    }
+
+    public ArrayList<BlockPos> getRequiredBlockPositions(){
+        return blockPositions;
     }
 
     public long getDuration() {
@@ -63,6 +150,10 @@ public abstract class RitualBase{
         return fullDuration;
     }
 
+    public int getVECost(){
+        return veCost;
+    }
+
     public void setDuration(long d) {
         duration = d;
     }
@@ -71,42 +162,23 @@ public abstract class RitualBase{
         fullDuration = d;
     }
 
-    public Boolean isDone(){
-        return timeElapsed > getFullDuration();
+    public void setVECost(int cost){
+        veCost = cost;
     }
 
-    public EnumRitualTypes getRitualType(RitualBase ritualBase){
-        if(ritualBase instanceof RitualTechniques){
-            return EnumRitualTypes.TECHNIQUE;
-        }else if(ritualBase instanceof RitualCurse){
-            return EnumRitualTypes.CURSE;
-        }else if(ritualBase instanceof RitualCommitment){
-            return EnumRitualTypes.COMMITMENT;
-        }else{
-            return null;
-        }
+    public void setLevel(EnumRitualLevel l) {
+        level = l;
     }
 
-    public ArrayList<Block> getRequiredBlocks(EntityPlayer player, World world, BlockPos pos){
-        return blocksInOrder;
+    public void setBlockPositions(ArrayList<BlockPos> pos) {
+        blockPositions = pos;
     }
 
-    public ArrayList<BlockPos> getRequiredBlockPositions(EntityPlayer player, World world, BlockPos pos){
-        return blockPositions;
+    public void setBlocksInOrder(ArrayList<Block> blocks) {
+        blocksInOrder = blocks;
     }
 
-    public int getVECost(){
-        return 0;
+    public void setRitualType(EnumRitualTypes t){
+        type = t;
     }
-
-    public abstract EnumRitualLevel getLevel();
-
-    public abstract void applySideEffects(EntityPlayer player, World world);
-
-    public abstract void applyEffects(EntityPlayer player, World world);
-
-    public abstract void castSpell(EntityPlayer player, World world);
-
-    public abstract void render(EntityPlayer player, World world, BlockPos pos);
-
 }
