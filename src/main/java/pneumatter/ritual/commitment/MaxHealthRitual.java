@@ -11,13 +11,12 @@ import pneumatter.ritual.EnumRitualTypes;
 import pneumatter.ritual.RitualBase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class MaxHealthRitual extends RitualBase{
 
-    public static final long DURATION = 5000;
-    public static final long FULL_DURATION = 7000;
+    public static final int DURATION = 5*20;
+    public static final int FULL_DURATION = 7*20;
     public static final EnumRitualLevel LEVEL = EnumRitualLevel.PRIMAL;
     public static final EnumRitualTypes TYPE = EnumRitualTypes.COMMITMENT;
     public static final int VECOST = 20;

@@ -7,16 +7,32 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class RitualUtil {
 
-    public static ArrayList<RitualBase> ongoingRituals;
-
+    public static ArrayList<RitualBase> ongoingRituals = new ArrayList<>();
     @SubscribeEvent
-    public void onWorldTickEvent(TickEvent e){
-        for(RitualBase r: ongoingRituals){
-            r.update();
+    public void onWorldTickEvent(TickEvent.WorldTickEvent e){
+
+        Iterator<RitualBase>  it = ongoingRituals.iterator();
+
+        if(!ongoingRituals.isEmpty()) {
+
+            while (it.hasNext()) {
+                RitualBase rit = it.next();
+                rit.update();
+                if (!rit.isStillActive()) {
+                    it.remove();
+                }
+            }
         }
+    }
+    public static void addNew(RitualBase ritual){
+        if(ritual.isRitualReady()) {
+            ongoingRituals.add(ritual);
+        }
+
     }
 
     public static Boolean checkAreBlocksDown(ArrayList<Block> blocks, ArrayList<BlockPos> positions, World world){

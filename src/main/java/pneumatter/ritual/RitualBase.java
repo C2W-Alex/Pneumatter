@@ -4,6 +4,7 @@ package pneumatter.ritual;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import pneumatter.capabilities.VECapability;
 
@@ -11,10 +12,9 @@ import java.util.ArrayList;
 
 public class RitualBase{
 
-    public long startTime;
-    public long timeElapsed;
-    public long duration;
-    public long fullDuration;
+    public int durationTicks;
+    public int fullDurationTicks;
+    public int ticks;
 
     public EnumRitualLevel level;
 
@@ -29,19 +29,21 @@ public class RitualBase{
 
     public EnumRitualTypes type;
 
-    public RitualBase(EntityPlayer player, World world, BlockPos pos, long duration, long fullDuration, EnumRitualLevel level, int veCost, ArrayList<BlockPos> blockPositions, ArrayList<Block> blocksInOrder, EnumRitualTypes type) {
+    public RitualBase(EntityPlayer player, World world, BlockPos pos, int durationTicks, int fullDurationTicks, EnumRitualLevel level, int veCost, ArrayList<BlockPos> blockPositions, ArrayList<Block> blocksInOrder, EnumRitualTypes type) {
         this.player = player;
         this.pos = pos;
         this.world = world;
-        setDuration(duration);
-        setFullDuration(fullDuration);
-        setLevel(level);
-        setVECost(veCost);
+        setDurationTicks(durationTicks);
+        setFullDurationTicks(fullDurationTicks);
         setBlockPositions(blockPositions);
         setBlocksInOrder(blocksInOrder);
-        setRitualType(type);
-        addRequirements(pos);
-        start(player, world, pos);
+        if(!world.isRemote) {
+            setLevel(level);
+            setVECost(veCost);
+            setRitualType(type);
+            addRequirements(pos);
+            start(player);
+        }
     }
 
 
@@ -50,42 +52,41 @@ public class RitualBase{
         return isRitualInPlace();
     }
 
-    public void start(EntityPlayer player, World world, BlockPos pos){
+    public void start(EntityPlayer player){
         if(player.getCapability(VECapability.VE, null).getVE() <= getVECost()){
             player.getCapability(VECapability.VE, null).setVE(0);
         }else{
             player.getCapability(VECapability.VE, null).removeVE(getVECost());
         }
-
-        if(isRitualReady()) {
-            startTime = System.currentTimeMillis();
-        }
     }
 
-
+    public Boolean isStillActive(){
+        return isRitualInPlace() && !isDone();
+    }
 
     public void update(){
 
-        if(isRitualInPlace() && !isDone()) {
-            timeElapsed = System.currentTimeMillis() - getStartTime();
-            if(world.isRemote){
+        if(isStillActive()) {
+            setTicks(getTicks()+1);
+            if (world.isRemote) {
                 render();
-            }
-            if(timeElapsed == duration) {
-                if (getRitualType() == EnumRitualTypes.COMMITMENT) {
-                    applyEffects();
-                } else if (getRitualType() == EnumRitualTypes.CURSE) {
-                    applyEffects();
-                    applySideEffects();
-                } else if (getRitualType() == EnumRitualTypes.TECHNIQUE) {
-                    applyEffects();
-                    castSpell();
+            } else {
+                if (getTicks() == getDurationTicks()) {
+                    apply();
                 }
             }
-        }else{
-            if(!world.isRemote) {
-                RitualUtil.ongoingRituals.remove(this);
-            }
+        }
+    }
+
+    public void apply(){
+        if (getRitualType() == EnumRitualTypes.COMMITMENT) {
+            applyEffects();
+        } else if (getRitualType() == EnumRitualTypes.CURSE) {
+            applyEffects();
+            applySideEffects();
+        } else if (getRitualType() == EnumRitualTypes.TECHNIQUE) {
+            applyEffects();
+            castSpell();
         }
     }
 
@@ -95,7 +96,7 @@ public class RitualBase{
 
 
     public Boolean isDone(){
-        return timeElapsed > getFullDuration();
+        return getTicks() > getFullDurationTicks();
     }
 
     public EnumRitualTypes getRitualType(){
@@ -115,12 +116,10 @@ public class RitualBase{
     }
 
     public void render(){
-
+        player.sendMessage(new TextComponentString("THIS SHOULD BE A RENDERER METHOD"));
     }
 
-    public void addRequirements(BlockPos pos){
-
-    }
+    public void addRequirements(BlockPos pos){}
 
     public EnumRitualLevel getLevel(){
         return level;
@@ -134,32 +133,28 @@ public class RitualBase{
         return blockPositions;
     }
 
-    public long getDuration() {
-        return duration;
+    public int getDurationTicks() {
+        return durationTicks;
     }
 
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public long getTimeElapsed(){
-        return timeElapsed;
-    }
-
-    public long getFullDuration() {
-        return fullDuration;
+    public int getFullDurationTicks() {
+        return fullDurationTicks;
     }
 
     public int getVECost(){
         return veCost;
     }
 
-    public void setDuration(long d) {
-        duration = d;
+    public int getTicks(){
+        return ticks;
     }
 
-    public void setFullDuration(long d) {
-        fullDuration = d;
+    public void setDurationTicks(int t) {
+        durationTicks = t;
+    }
+
+    public void setFullDurationTicks(int t) {
+        fullDurationTicks = t;
     }
 
     public void setVECost(int cost){
@@ -180,5 +175,9 @@ public class RitualBase{
 
     public void setRitualType(EnumRitualTypes t){
         type = t;
+    }
+
+    public void setTicks(int t){
+        ticks = t;
     }
 }

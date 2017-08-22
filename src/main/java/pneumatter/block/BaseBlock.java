@@ -24,8 +24,8 @@ public class BaseBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        RitualUtil.ongoingRituals.add(new MaxHealthRitual(playerIn, worldIn, pos));
-
+        MaxHealthRitual rit = new MaxHealthRitual(playerIn, worldIn, pos);
+        RitualUtil.addNew(rit);
         return true;
     }
 
