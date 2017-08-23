@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import pneumatter.capabilities.VECapability;
 
 import java.util.ArrayList;
@@ -37,13 +39,12 @@ public class RitualBase{
         setFullDurationTicks(fullDurationTicks);
         setBlockPositions(blockPositions);
         setBlocksInOrder(blocksInOrder);
-        if(!world.isRemote) {
-            setLevel(level);
-            setVECost(veCost);
-            setRitualType(type);
-            addRequirements(pos);
-            start(player);
-        }
+        setLevel(level);
+        setVECost(veCost);
+        setRitualType(type);
+        addRequirements(pos);
+        start(player);
+
     }
 
 
@@ -65,15 +66,14 @@ public class RitualBase{
     }
 
     public void update(){
-
+        player.sendMessage(new TextComponentString("TICKS; " + getTicks()));
+        if(world.isRemote){
+            render();
+        }
         if(isStillActive()) {
             setTicks(getTicks()+1);
-            if (world.isRemote) {
-                render();
-            } else {
-                if (getTicks() == getDurationTicks()) {
-                    apply();
-                }
+            if (getTicks() == getDurationTicks()) {
+                apply();
             }
         }
     }
@@ -114,10 +114,8 @@ public class RitualBase{
     public void castSpell(){
 
     }
-
-    public void render(){
-        player.sendMessage(new TextComponentString("THIS SHOULD BE A RENDERER METHOD"));
-    }
+    @SideOnly(Side.CLIENT)
+    public void render(){}
 
     public void addRequirements(BlockPos pos){}
 

@@ -12,18 +12,24 @@ import java.util.Iterator;
 public class RitualUtil {
 
     public static ArrayList<RitualBase> ongoingRituals = new ArrayList<>();
+
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent e){
+        if(e.phase == TickEvent.Phase.END) {
 
-        Iterator<RitualBase>  it = ongoingRituals.iterator();
+            Iterator<RitualBase> it = ongoingRituals.iterator();
 
-        if(!ongoingRituals.isEmpty()) {
-
-            while (it.hasNext()) {
-                RitualBase rit = it.next();
-                rit.update();
-                if (!rit.isStillActive()) {
-                    it.remove();
+            if (!ongoingRituals.isEmpty()) {
+                while (it.hasNext()) {
+                    if(!e.world.isRemote) {
+                        RitualBase rit = it.next();
+                        if(rit.world == e.world) {
+                            rit.update();
+                            if (!rit.isStillActive()) {
+                                it.remove();
+                            }
+                        }
+                    }
                 }
             }
         }
