@@ -1,12 +1,13 @@
 package pneumatter.vitaeessentia;
 
 import net.minecraft.entity.player.EntityPlayer;
+import pneumatter.capabilities.VECapability;
 
-public class DamageTweaker implements ILockableFactor, ITweakableFactor {
+public class FactorOther implements IFactor {
 
     @Override
     public int getFactor(EntityPlayer player) {
-        return 1;       //eventually calculatable
+        return player.getCapability(VECapability.VE, null).getCosts();
     }
 
     @Override

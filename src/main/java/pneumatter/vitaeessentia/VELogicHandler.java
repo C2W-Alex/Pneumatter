@@ -4,23 +4,43 @@ import net.minecraft.entity.player.EntityPlayer;
 import pneumatter.capabilities.VECapability;
 
 public class VELogicHandler {
+    public EntityPlayer player = null;
 
-    private HealthTweaker healthTweaker = new HealthTweaker();
-    private DamageTweaker damageTweaker = new DamageTweaker();
+    public FactorDamage factorDamage = new FactorDamage();
+    public FactorHealth factorHealth = new FactorHealth();
+    public FactorOther factorOther = new FactorOther();
 
-    int skill = 1; //eventually make capability that holds skill
-    int storage = 100; //eventually add it in VE capability
-    int bonus = 0; //eventually will be the additions made by armor / curses
+    public IFactor factorToChange = null;
 
-    public final int formula(EntityPlayer player) {
-        return 3*healthTweaker.getFactor(player)*damageTweaker.getFactor(player) + storage*skill + bonus;
+    public static final int storage = 100;
+
+    int skill = player.getCapability(VECapability.VE, null).getSkill();
+    int bonus = player.getCapability(VECapability.VE, null).getBonus();
+    int costs = factorOther.getFactor(player);
+
+    private final int total = 4*20*1 + skill*storage + bonus - costs;
+
+    public VELogicHandler(IFactor factorToChange, EntityPlayer player) {
+        this.player = player;
+        this.factorToChange = factorToChange;
+        distributeVE();
     }
 
-    public void distributeVE(EntityPlayer player){
-        player.getCapability(VECapability.VE, null).setMaxVE(formula(player));
+    public int amount() {
+        if(factorToChange instanceof FactorHealth){
+            return (total-bonus-skill*storage+costs)/factorDamage.getFactor(player)*4;
+        }else if(factorToChange instanceof FactorDamage){
+            return (total-bonus-skill*storage+costs)/factorHealth.getFactor(player)*4;
+        }else{
+            return factorToChange.getFactor(player);
+        }
     }
 
-    public void makeChange(EntityPlayer player, ILockableFactor factor1, ITweakableFactor factor2){
-        factor2.setFactor(player, (player.getCapability(VECapability.VE, null).getMaxVE() - storage*skill - bonus)/factor1.getFactor(player));
+    public void distributeVE(){
+        this.player = player;
+        player.getCapability(VECapability.VE, null).setMaxVE(total);
+        if(factorToChange != null) {
+            factorToChange.setFactor(player, amount());
+        }
     }
 }

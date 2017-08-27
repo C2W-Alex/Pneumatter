@@ -14,4 +14,16 @@ public interface IVECapability {
 
     void setMaxVE(int ve);
 
+    int getSkill();
+
+    void setSkill(int skill);
+
+    int getBonus();
+
+    void setBonus(int bonus);
+
+    int getCosts();
+
+    void setCosts(int costs);
+
 }
