@@ -26,6 +26,7 @@ public class RitualUtil {
                         if(rit.world == e.world) {
                             rit.update();
                             if (!rit.isStillActive()) {
+                                rit.hasStarted = false;
                                 it.remove();
                             }
                         }

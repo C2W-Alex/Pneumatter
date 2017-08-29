@@ -12,6 +12,7 @@ import pneumatter.Pneumatter;
 import pneumatter.PneumatterTab;
 import pneumatter.ritual.RitualUtil;
 import pneumatter.ritual.commitment.MaxHealthRitual;
+import pneumatter.ritual.commitment.MoveSpeedRitual;
 
 public class BaseBlock extends Block {
 
@@ -24,7 +25,7 @@ public class BaseBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        MaxHealthRitual rit = new MaxHealthRitual(playerIn, worldIn, pos);
+        MoveSpeedRitual rit = new MoveSpeedRitual(playerIn, worldIn, pos);
         RitualUtil.addNew(rit);
 
         return true;

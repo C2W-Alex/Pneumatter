@@ -22,6 +22,8 @@ public class RitualBase{
 
     public int veCost;
 
+    public Boolean hasStarted;
+
     public ArrayList<BlockPos> blockPositions;
     public ArrayList<Block> blocksInOrder;
 
@@ -58,6 +60,7 @@ public class RitualBase{
             player.getCapability(VECapability.VE, null).setVE(0);
         }else{
             player.getCapability(VECapability.VE, null).removeVE(getVECost());
+            hasStarted = true;
         }
     }
 
@@ -66,14 +69,16 @@ public class RitualBase{
     }
 
     public void update(){
-        player.sendMessage(new TextComponentString("TICKS; " + getTicks()));
-        if(world.isRemote){
-            render();
-        }
-        if(isStillActive()) {
-            setTicks(getTicks()+1);
-            if (getTicks() == getDurationTicks()) {
-                apply();
+        if(hasStarted) {
+            player.sendMessage(new TextComponentString("TICKS; " + getTicks()));
+            if (world.isRemote) {
+                render();
+            }
+            if (isStillActive()) {
+                setTicks(getTicks() + 1);
+                if (getTicks() == getDurationTicks()) {
+                    apply();
+                }
             }
         }
     }

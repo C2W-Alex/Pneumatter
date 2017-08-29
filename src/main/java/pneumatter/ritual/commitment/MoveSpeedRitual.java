@@ -5,18 +5,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import pneumatter.commitments.MaxHealthCommitment;
+import pneumatter.commitments.MoveSpeedCommitment;
 import pneumatter.ritual.EnumRitualLevel;
 import pneumatter.ritual.EnumRitualTypes;
 import pneumatter.ritual.RitualBase;
 import pneumatter.vitaeessentia.FactorHealth;
-import pneumatter.vitaeessentia.FactorSpeed;
 import pneumatter.vitaeessentia.VELogicHandler;
 
 import java.util.ArrayList;
 
-
-public class MaxHealthRitual extends RitualBase{
+public class MoveSpeedRitual extends RitualBase {
 
     public static final int DURATION = 5*20;
     public static final int FULL_DURATION = 7*20;
@@ -27,8 +25,7 @@ public class MaxHealthRitual extends RitualBase{
     public static final ArrayList<BlockPos> BLOCK_POS = new ArrayList<>();
     public static final ArrayList<Block> BLOCKS = new ArrayList<Block>(){};
 
-
-    public MaxHealthRitual(EntityPlayer player, World world, BlockPos pos) {
+    public MoveSpeedRitual(EntityPlayer player, World world, BlockPos pos) {
         super(player, world, pos, DURATION, FULL_DURATION, LEVEL, VECOST, BLOCK_POS, BLOCKS, TYPE);
     }
 
@@ -39,10 +36,10 @@ public class MaxHealthRitual extends RitualBase{
         BLOCK_POS.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ()+4));
         BLOCK_POS.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ()-4));
 
-        BLOCKS.add(Blocks.DIAMOND_BLOCK);
-        BLOCKS.add(Blocks.DIAMOND_BLOCK);
-        BLOCKS.add(Blocks.DIAMOND_BLOCK);
-        BLOCKS.add(Blocks.DIAMOND_BLOCK);
+        BLOCKS.add(Blocks.EMERALD_BLOCK);
+        BLOCKS.add(Blocks.EMERALD_BLOCK);
+        BLOCKS.add(Blocks.EMERALD_BLOCK);
+        BLOCKS.add(Blocks.EMERALD_BLOCK);
     }
 
 
@@ -50,6 +47,6 @@ public class MaxHealthRitual extends RitualBase{
     @Override
     public void applyEffects() {
         VELogicHandler handler = new VELogicHandler();
-        handler.distributeVE(super.player, new FactorSpeed(), new MaxHealthCommitment(super.player, AMOUNT));
+        handler.distributeVE(player, new FactorHealth(), new MoveSpeedCommitment(super.player, AMOUNT));
     }
 }

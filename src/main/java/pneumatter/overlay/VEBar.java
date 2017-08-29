@@ -27,7 +27,7 @@ public class VEBar extends GuiScreen {
 
             for(int x = 190; x >= mc.player.getCapability(VECapability.VE, null ).getVE()/mc.player.getCapability(VECapability.VE, null ).getMaxVE()*190;  x--){
                 GlStateManager.enableAlpha();
-                drawTexturedModalRect(sr.getScaledWidth()*31/32 - 19, sr.getScaledHeight()*1/16 + 2 + x, 19, 2 + x, 19, 1);
+                drawTexturedModalRect(sr.getScaledWidth()*31/32 - 19, sr.getScaledHeight()*1/16 + 2 + x, 19, 2 +x, 19, 1);
             }
 
         }

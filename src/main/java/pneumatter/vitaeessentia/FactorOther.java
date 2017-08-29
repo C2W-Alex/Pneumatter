@@ -12,6 +12,6 @@ public class FactorOther implements IFactor {
 
     @Override
     public void setFactor(EntityPlayer player, int amount) {
-
+        player.getCapability(VECapability.VE, null).setCosts(amount);
     }
 }
