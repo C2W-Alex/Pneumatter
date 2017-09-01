@@ -14,6 +14,6 @@ public class FactorDamage implements IFactor {
 
     @Override
     public void setFactor(EntityPlayer player, int amount) {
-        ModifierApplier.applyChange(player, SharedMonsterAttributes.ATTACK_DAMAGE, new AttributeModifier("potion.attackDamage", amount, 0));
+        ModifierApplier.applyChange(player, SharedMonsterAttributes.ATTACK_DAMAGE, new AttributeModifier("attackDamage", amount-1, 0));
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import pneumatter.attributemodifiers.ModifierApplier;
 
+
 public abstract class BaseCommitment {
 
     EntityPlayer player;

@@ -25,5 +25,4 @@ public interface IVECapability {
     int getCosts();
 
     void setCosts(int costs);
-
 }

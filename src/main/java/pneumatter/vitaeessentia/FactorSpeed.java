@@ -14,6 +14,6 @@ public class FactorSpeed implements IFactor {
 
     @Override
     public void setFactor(EntityPlayer player, int amount) {
-        ModifierApplier.applyChange(player, SharedMonsterAttributes.ATTACK_DAMAGE, new AttributeModifier("potion.movementSpeed", amount, 0));
+        ModifierApplier.applyChange(player, SharedMonsterAttributes.MOVEMENT_SPEED, new AttributeModifier(UUIDHelper.MOVEMENT_SPEED.getId(), "movementSpeed", amount-1, 0));
     }
 }

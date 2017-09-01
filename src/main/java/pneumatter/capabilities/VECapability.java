@@ -13,6 +13,8 @@ import pneumatter.Pneumatter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class VECapability {
 
@@ -129,6 +131,7 @@ public class VECapability {
         public void setCosts(int costs) {
             this.costs = costs;
         }
+
     }
 
     public static class VEStorage implements Capability.IStorage<IVECapability> {
@@ -137,6 +140,7 @@ public class VECapability {
         @Override
         public NBTBase writeNBT(Capability<IVECapability> capability, IVECapability instance, EnumFacing side)
         {
+            int i = 0;
             NBTTagCompound compound = new NBTTagCompound();
             compound.setInteger("ve", instance.getVE());
             compound.setInteger("veMax", instance.getMaxVE());

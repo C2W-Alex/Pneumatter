@@ -14,6 +14,6 @@ public class FactorHealth implements IFactor {
 
     @Override
     public void setFactor(EntityPlayer player, int amount) {
-        ModifierApplier.applyChange(player, SharedMonsterAttributes.MAX_HEALTH, new AttributeModifier("potion.healthBoost", amount, 0));
+        ModifierApplier.applyChange(player, SharedMonsterAttributes.MAX_HEALTH, new AttributeModifier(UUIDHelper.MAX_HEALTH.getId(),"maxHealth", amount-20, 0));
     }
 }

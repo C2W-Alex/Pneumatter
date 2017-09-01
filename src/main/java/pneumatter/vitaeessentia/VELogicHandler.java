@@ -24,26 +24,25 @@ public class VELogicHandler {
         return factorOther.getFactor(player);
     }
 
+    public void setCosts(EntityPlayer player, int costs){factorOther.setFactor(player, costs);}
+
     public int getTotal(EntityPlayer player){
         return 4*20*1*1 + getSkill(player)*storage + getBonus(player) - getCosts(player);
     }
 
     public int amount(EntityPlayer player, IFactor factorToChange) {
         if(factorToChange instanceof FactorHealth){
-            return (getTotal(player)-getBonus(player)-getSkill(player)*storage+getCosts(player))/factorDamage.getFactor(player)*factorSpeed.getFactor(player);
+            return (getTotal(player)-getBonus(player)-getSkill(player)*storage+getCosts(player))/(factorDamage.getFactor(player)*factorSpeed.getFactor(player)*4);
         }else if(factorToChange instanceof FactorDamage){
-            return (getTotal(player)-getBonus(player)-getSkill(player)*storage+getCosts(player))/factorHealth.getFactor(player)*factorSpeed.getFactor(player);
+            return (getTotal(player)-getBonus(player)-getSkill(player)*storage+getCosts(player))/(factorHealth.getFactor(player)*factorSpeed.getFactor(player)*4);
         }else if(factorToChange instanceof FactorSpeed){
-            return (getTotal(player)-getBonus(player)-getSkill(player)*storage+getCosts(player))/factorHealth.getFactor(player)*factorDamage.getFactor(player);
+            return (getTotal(player)-getBonus(player)-getSkill(player)*storage+getCosts(player))/(factorHealth.getFactor(player)*factorDamage.getFactor(player)*4);
         }else{
             return factorToChange.getFactor(player);
         }
     }
 
     public void distributeVE(EntityPlayer player, IFactor factorToChange, Object castable){
-        if(factorToChange instanceof FactorOther){
-            player.getCapability(VECapability.VE, null).setCosts(player.getCapability(VECapability.VE, null).getCosts()+factorToChange.getFactor(player));
-        }
         player.getCapability(VECapability.VE, null).setMaxVE(getTotal(player));
         if(player.getCapability(VECapability.VE, null).getMaxVE()<=0){
             player.setDead();
