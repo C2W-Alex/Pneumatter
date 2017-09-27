@@ -11,8 +11,7 @@ import net.minecraft.world.World;
 import pneumatter.Pneumatter;
 import pneumatter.PneumatterTab;
 import pneumatter.ritual.RitualUtil;
-import pneumatter.ritual.commitment.MaxHealthRitual;
-import pneumatter.ritual.commitment.MoveSpeedRitual;
+import pneumatter.ritual.MoveSpeedRitual;
 
 public class BaseBlock extends Block {
 

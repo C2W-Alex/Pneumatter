@@ -1,11 +1,12 @@
 package pneumatter.vitaeessentia;
 
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import pneumatter.attributemodifiers.ModifierApplier;
+import pneumatter.castables.AttackDamageCastable;
 
 public class FactorDamage implements IFactor {
+
+
 
     @Override
     public int getFactor(EntityPlayer player) {
@@ -14,6 +15,6 @@ public class FactorDamage implements IFactor {
 
     @Override
     public void setFactor(EntityPlayer player, int amount) {
-        ModifierApplier.applyChange(player, SharedMonsterAttributes.ATTACK_DAMAGE, new AttributeModifier("attackDamage", amount-1, 0));
+        new AttackDamageCastable(player, amount);
     }
 }

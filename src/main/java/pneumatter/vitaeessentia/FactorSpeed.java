@@ -1,9 +1,8 @@
 package pneumatter.vitaeessentia;
 
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import pneumatter.attributemodifiers.ModifierApplier;
+import pneumatter.castables.MoveSpeedCastable;
 
 public class FactorSpeed implements IFactor {
 
@@ -14,6 +13,6 @@ public class FactorSpeed implements IFactor {
 
     @Override
     public void setFactor(EntityPlayer player, int amount) {
-        ModifierApplier.applyChange(player, SharedMonsterAttributes.MOVEMENT_SPEED, new AttributeModifier(UUIDHelper.MOVEMENT_SPEED.getId(), "movementSpeed", amount-1, 0));
+        new MoveSpeedCastable(player, amount);
     }
 }

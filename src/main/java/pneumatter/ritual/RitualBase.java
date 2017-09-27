@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import pneumatter.capabilities.VECapability;
+import pneumatter.castables.EnumCastableLevel;
+import pneumatter.castables.EnumCastableTypes;
 
 import java.util.ArrayList;
 
@@ -18,7 +20,7 @@ public class RitualBase{
     public int fullDurationTicks;
     public int ticks;
 
-    public EnumRitualLevel level;
+    public EnumCastableLevel level;
 
     public int veCost;
 
@@ -31,9 +33,9 @@ public class RitualBase{
     public World world;
     public BlockPos pos;
 
-    public EnumRitualTypes type;
+    public EnumCastableTypes type;
 
-    public RitualBase(EntityPlayer player, World world, BlockPos pos, int durationTicks, int fullDurationTicks, EnumRitualLevel level, int veCost, ArrayList<BlockPos> blockPositions, ArrayList<Block> blocksInOrder, EnumRitualTypes type) {
+    public RitualBase(EntityPlayer player, World world, BlockPos pos, int durationTicks, int fullDurationTicks, EnumCastableLevel level, int veCost, ArrayList<BlockPos> blockPositions, ArrayList<Block> blocksInOrder, EnumCastableTypes type) {
         this.player = player;
         this.pos = pos;
         this.world = world;
@@ -84,12 +86,12 @@ public class RitualBase{
     }
 
     public void apply(){
-        if (getRitualType() == EnumRitualTypes.COMMITMENT) {
+        if (getRitualType() == EnumCastableTypes.COMMITMENT) {
             applyEffects();
-        } else if (getRitualType() == EnumRitualTypes.CURSE) {
+        } else if (getRitualType() == EnumCastableTypes.CURSE) {
             applyEffects();
             applySideEffects();
-        } else if (getRitualType() == EnumRitualTypes.TECHNIQUE) {
+        } else if (getRitualType() == EnumCastableTypes.TECHNIQUE) {
             applyEffects();
             castSpell();
         }
@@ -104,7 +106,7 @@ public class RitualBase{
         return getTicks() > getFullDurationTicks();
     }
 
-    public EnumRitualTypes getRitualType(){
+    public EnumCastableTypes getRitualType(){
         return type;
     }
 
@@ -124,7 +126,7 @@ public class RitualBase{
 
     public void addRequirements(BlockPos pos){}
 
-    public EnumRitualLevel getLevel(){
+    public EnumCastableLevel getLevel(){
         return level;
     }
 
@@ -164,7 +166,7 @@ public class RitualBase{
         veCost = cost;
     }
 
-    public void setLevel(EnumRitualLevel l) {
+    public void setLevel(EnumCastableLevel l) {
         level = l;
     }
 
@@ -176,7 +178,7 @@ public class RitualBase{
         blocksInOrder = blocks;
     }
 
-    public void setRitualType(EnumRitualTypes t){
+    public void setRitualType(EnumCastableTypes t){
         type = t;
     }
 
